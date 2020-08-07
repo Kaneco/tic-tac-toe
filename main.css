@@ -3,32 +3,77 @@
 #E1E2E2 cinzento */
 
 body {
-    background-color: #E1E2E2;
+	background-color: #e1e2e2;
 }
 
 #container {
-    width: 600px;
-    height: 600px;
-    margin:auto;
-    margin-top: 4em;
-    background-color:#1D2228 ;
-    -webkit-box-shadow: 0px 0px 31px -1px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 0px 31px -1px rgba(0,0,0,0.75);
-    box-shadow: 0px 0px 31px -1px rgba(0,0,0,0.75);
-    border-radius: 5px;
+	width: 600px;
+	height: 600px;
+	margin: auto;
+	margin-top: 4em;
+	background-color: #1d2228;
+	-webkit-box-shadow: 0px 0px 31px -1px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: 0px 0px 31px -1px rgba(0, 0, 0, 0.75);
+	box-shadow: 0px 0px 31px -1px rgba(0, 0, 0, 0.75);
+	border-radius: 5px;
+}
+
+#title {
+	height: 150px;
 }
 
 h1 {
+	margin: auto;
+	text-align: center;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	font-family: "Trebuchet MS", sans-serif;
+	font-size: 2em;
+	font-weight: bolder;
+	color: #ffc107;
+}
+
+#select-player{
+    display: none;
+}
+
+#content{
+    display: flex;
+    justify-content: center;
+}
+
+#game-board {
+    display: grid;
     margin: auto;
-    text-align: center;
-    padding-top: 1em;
+	grid-template-columns: repeat(3, 125px [col-start]);
+	grid-template-rows: repeat(3, 125px [col-start]);
 }
 
-h1 {
-    position: relative;
-    z-index: 2;
-    font-size: 4em;
-    letter-spacing: 5px;
-    font-family: 'Red Hat Display', sans-serif;
-    color: #d15b00 ;
-  }
+#playervsplayer-card {
+}
+
+.positions{
+    box-shadow: 3px 3px 14px -5px rgba(0,0,0,0.75);
+    background-color: #1D2228;
+}
+
+.positions:hover{
+    background-color: #232933;
+}
+
+
+#position-0, #position-3, #position-6{
+    border-right: 1px solid #ffc107;
+}
+#position-2, #position-5, #position-8{
+    border-left: 1px solid #ffc107;
+}
+#position-0, #position-1, #position-2{
+    border-bottom: 1px solid #ffc107;
+}
+#position-3, #position-4, #position-5{
+    border-bottom: 1px solid #ffc107;
+}
+
+
+
