@@ -7,27 +7,34 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css" integrity="sha384-r4NyP46KrjDleawBgD5tp8Y7UzmLA05oM1iAEQ17CSuDqnUK2+k9luXQOfXJCJ4I" crossorigin="anonymous">
     </head>
     <body>
         <div id="container">
             <div id="title"><h1>tic-tac-toe</h1></div>
-            <div id="content">
-                <div id="select-player">
-                    <div id="playervsplayer-card" class="card text-center bg-light" style="width: 12rem;">
-                        <div class="card-body">
-                          <h5 class="card-title">Player vs Player</h5>
-                          <p class="card-text">W</p>
-                          <a href="#" class="btn  btn-warning">Play</a>
-                        </div>
-                      </div>
-                      <div id="playervscpu-card" class="card text-center bg-light mb-3" style="width: 12rem;">
-                        <div class="card-body">
-                          <h5 class="card-title">Player vs Computer (AI)</h5>
-                          <p class="card-text">With support</p>
-                          <a href="#" class="btn  btn-warning">Play</a>
-                        </div>
-                      </div>
+                <div id="game-ending">
+                  <div class="ending-msg">
+                  </div>
+                </div>
+                <div id="player-names">
+                  <h3 id="textp1">Player 1 Name:</h3>
+                  <input type="text" id="player1" value="Some text...">
+                  <h3 id="textp2">Player 2 Name:</h3>
+                  <input type="text" id="player2" value="Some text...">
+                  <button id="submit-btn" class="btncustom yellow">Start</button>
+                </div>
+                <div id="player-info">
+                  <div class="playercard" >
+                    <div class="pheader"><h2>Player 1</h2></div>
+                    <div class="pname" id="player1name">Name:</div>
+                    <div class="pscore" id="player1score">Score:</div>
+                  </div>
+                  <button id="restart-game" class="btncustom yellow">Restart Game</button>
+                  <button id="change-players" class="btncustom yellow">Change Players</button>
+                  <div class="playercard" >
+                    <div class="pheader"><h2>Player 2</h2></div>
+                    <div class="pname" id="player2name">Name:</div>
+                    <div class="pscore" id="player2score">Score:</div>
+                  </div>
                 </div>
                 <div id="game-board">
                     <div class="positions" id="position-0"></div>
@@ -40,11 +47,7 @@
                     <div class="positions" id="position-7"></div>
                     <div class="positions" id="position-8"></div>
                 </div>
-            </div>
-            <div id="Footer"></div>
         </div>
         <script src="main.js" async defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
     </body>
 </html>
