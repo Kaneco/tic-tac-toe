@@ -97,6 +97,11 @@ const gameFlow = (() => {
 		gameOngoing = false;
 	}
 
+	// Get current game state
+	function getGameState() {
+		return gameOngoing;
+	}
+
 	//Reset game state to defaults after a game over
 	function resetGameState() {
 		gameOngoing = true;
@@ -157,6 +162,7 @@ const gameFlow = (() => {
 		gameLogic,
 		resetGameState,
 		disableGame,
+		getGameState,
 	};
 })();
 
@@ -168,8 +174,8 @@ const screenDisplay = (() => {
 		for (let position of boardPositions) {
 			let oSignImage = document.createElement("img");
 			let xSignImage = document.createElement("img");
-			oSignImage.src = "/images/osign.png";
-			xSignImage.src = "/images/xsign.png";
+			oSignImage.src = "./images/osign.png";
+			xSignImage.src = "./images/xsign.png";
 			oSignImage.className = "bounce-in-fwd";
 			xSignImage.className = "bounce-in-fwd";
 			if (!position.classList.contains("played")) {
@@ -266,7 +272,7 @@ const screenDisplay = (() => {
 			gameBoard.resetBoard();
 			gameFlow.resetGameState();
 			// changes view to board and player info again
-			document.getElementById("game-board").style.opacity = 1; 
+			document.getElementById("game-board").style.opacity = 1;
 			document.getElementById("player-names").style.display = "none";
 			document.getElementById("player-info").style.display = "flex";
 			resetRenderBoard();
@@ -278,27 +284,30 @@ const screenDisplay = (() => {
 		.addEventListener("click", function (event) {
 			//Game Board Event Listeners
 			if (event.target.classList.contains("positions")) {
-				let position = event.target.id.slice(-1);// get position clicked
-				resultOfPlay = gameFlow.gameLogic(position); // check if position is a valid play
-				updatePlayerInfo(); // updates player info (in this case the currentPlayer only since it's in between plays)
-				if (Array.isArray(resultOfPlay)) { // In case of WIN
-					render();
-					triggerEndMsg(gameFlow.getCurrentPlayer()); //Trigger End Msg with winning player
-					// Highlights winning plays
-					document
-						.getElementById(`position-${resultOfPlay[0]}`)
-						.classList.add("winner-position");
-					document
-						.getElementById(`position-${resultOfPlay[1]}`)
-						.classList.add("winner-position");
-					document
-						.getElementById(`position-${resultOfPlay[2]}`)
-						.classList.add("winner-position");
-				} else if (resultOfPlay == "TIE") {
-					render();
-					triggerEndMsg("tie"); //Trigger End Msg with tie
-				} else {
-					render();
+				let position = event.target.id.slice(-1); // get position clicked
+				if (gameFlow.getGameState()){ // check if game is active 
+					resultOfPlay = gameFlow.gameLogic(position); // check if position is a valid play
+					updatePlayerInfo(); // updates player info (in this case the currentPlayer only since it's in between plays)
+					if (Array.isArray(resultOfPlay)) {
+						// In case of WIN
+						render();
+						triggerEndMsg(gameFlow.getCurrentPlayer()); //Trigger End Msg with winning player
+						// Highlights winning plays
+						document
+							.getElementById(`position-${resultOfPlay[0]}`)
+							.classList.add("winner-position");
+						document
+							.getElementById(`position-${resultOfPlay[1]}`)
+							.classList.add("winner-position");
+						document
+							.getElementById(`position-${resultOfPlay[2]}`)
+							.classList.add("winner-position");
+					} else if (resultOfPlay == "TIE") {
+						render();
+						triggerEndMsg("tie"); //Trigger End Msg with tie
+					} else {
+						render();
+					}
 				}
 			}
 		});
