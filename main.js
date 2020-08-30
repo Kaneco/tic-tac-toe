@@ -1,3 +1,4 @@
+//initialize both players
 let player1;
 let player2;
 
@@ -17,17 +18,12 @@ const playerFactory = (name, sign) => {
 	return { name, sign, getScore, increaseScore };
 };
 
-// Players Created
-//const player1 = playerFactory("Player1", "X");
-//const player2 = playerFactory("Player2", "O");
-
 // Board Operations and Methods
 const gameBoard = (() => {
 	let board = new Array(9); //Creates board to store player positions
-	//let board = ["X", "X", "O", "", "X", "O", "", "", "X"];
 
+	//Update play made to the board
 	function changeBoardPosition(position, currentPlayerSign) {
-		//Update play made to the board
 		board[position] = currentPlayerSign;
 	}
 
@@ -84,17 +80,22 @@ const gameFlow = (() => {
 		[2, 4, 6],
 	];
 
-	let gameOngoing = true; // Game is still ongoing
+	let gameOngoing = false; // Game starts inactive
 	let currentPlayer = player1; // Start game always with player 1
 
 	// Toggles current player after a play
-	const toggleCurrentPlayer = () => {
+	const _toggleCurrentPlayer = () => {
 		if (currentPlayer == player1) {
 			currentPlayer = player2;
 		} else {
 			currentPlayer = player1;
 		}
 	};
+
+	//disables the game while on other menus of buttons (not playing)
+	function disableGame() {
+		gameOngoing = false;
+	}
 
 	//Reset game state to defaults after a game over
 	function resetGameState() {
@@ -106,7 +107,7 @@ const gameFlow = (() => {
 	const getCurrentPlayer = () => currentPlayer;
 
 	// Check if a play is possible (position is emtpy), make a play and add it to the board array and to the plays array stored for each player
-	function makePlay(position, currentPlayer) {
+	function _makePlay(position, currentPlayer) {
 		if (gameBoard.checkIfEmpty(position)) {
 			gameBoard.changeBoardPosition(position, currentPlayer.sign);
 			return true;
@@ -116,7 +117,7 @@ const gameFlow = (() => {
 	}
 
 	// Check if a given player sign is a winner
-	function checkIfWinner(playerSign) {
+	function _checkIfWinner(playerSign) {
 		// Sign on the board has to match every winning combination of the same array
 		return winningMoves.find((winningCombinaton) => {
 			return winningCombinaton.every((position) => {
@@ -125,14 +126,16 @@ const gameFlow = (() => {
 		});
 	}
 
+	//Complete game logic
 	function gameLogic(position) {
 		if (gameOngoing) {
 			// Check if play is possible
-			if (makePlay(position, currentPlayer)) {
-				// Check if the play made resulted in win
-				winningArray = checkIfWinner(currentPlayer.sign);
+			if (_makePlay(position, currentPlayer)) {
+				// Check if the play made resulted in win, if so, increase score and return winning array
+				winningArray = _checkIfWinner(currentPlayer.sign);
 				if (Array.isArray(winningArray)) {
-					gameOngoing = false;
+					gameOngoing = false; // disable game
+					currentPlayer.increaseScore();
 					return winningArray;
 				}
 				// If no winner, check for TIE (in case board is full)
@@ -140,22 +143,20 @@ const gameFlow = (() => {
 					gameOngoing = false;
 					return "TIE";
 				}
-				toggleCurrentPlayer(); // Toggles Current Player if Play is Sucessfull
+				_toggleCurrentPlayer(); // Toggles Current Player if Play is Sucessfull
 			} else {
-				// Play not sucessful
+				// Play not sucessfull
 				return false;
 			}
 		}
-		return false;
+		return false; // game not ongoing/active
 	}
 
 	return {
-		toggleCurrentPlayer,
 		getCurrentPlayer,
-		makePlay,
-		checkIfWinner,
 		gameLogic,
 		resetGameState,
+		disableGame,
 	};
 })();
 
@@ -183,6 +184,7 @@ const screenDisplay = (() => {
 						position.appendChild(oSignImage);
 						position.classList.add("played");
 						break;
+						c;
 					default:
 						break;
 				}
@@ -190,57 +192,98 @@ const screenDisplay = (() => {
 		}
 	}
 
+	// Resets the rendered Board (for a new game)
 	function resetRenderBoard() {
-		// Resets the rendered Board (for a new game)
 		let boardPositions = document.getElementsByClassName("positions");
 		for (let position of boardPositions) {
 			position.innerHTML = "";
 			position.classList.remove("played");
 			position.classList.remove("winner-position");
 		}
+		updatePlayerInfo(); // updates the player info box
 	}
 
-	const triggerWinner = (winningCombination) => {};
+	//update player info box at the top (names, score, currentPlayer)
+	function updatePlayerInfo() {
+		document.getElementById("player1name").innerText = `Name: ${player1.name}`;
+		document.getElementById("player2name").innerText = `Name: ${player2.name}`;
+		document.getElementById(
+			"player1score"
+		).innerText = `Score: ${player1.getScore()}`;
+		document.getElementById(
+			"player2score"
+		).innerText = `Score: ${player2.getScore()}`;
+		document.getElementById("current-player").innerText = `Current Player: ${
+			gameFlow.getCurrentPlayer().name
+		} (${gameFlow.getCurrentPlayer().sign})`;
+	}
+
+	//Trigger End of Game message (win or tie)
+	const triggerEndMsg = (result) => {
+		document.getElementById("player-info").style.display = "none";
+		document.getElementById("game-ending").style.display = "flex";
+		if (result == "tie") {
+			document.getElementById("end-game-text").innerText =
+				"The game ended in a TIE!";
+		} else {
+			document.getElementById("end-game-text").innerText = `${
+				gameFlow.getCurrentPlayer().name
+			} won this round!`;
+		}
+	};
 
 	// Restart game, resets game state and board
+	let restartButtons = document.getElementsByClassName("restart-game");
+	for (var i = 0; i < restartButtons.length; i++) {
+		restartButtons[i].addEventListener("click", function (event) {
+			resetRenderBoard(); //resets displayed board
+			gameBoard.resetBoard(); //reset stored array board
+			gameFlow.resetGameState(); //reset game state to active
+			updatePlayerInfo(); //updates player info box
+			document.getElementById("game-ending").style.display = "none";
+			document.getElementById("player-info").style.display = "flex";
+		});
+	}
+
+	// Changes player Names, resets player data and scores.
 	document
-		.getElementById("restart-game")
+		.getElementById("change-players")
 		.addEventListener("click", function (event) {
-			resetRenderBoard();
-			gameBoard.resetBoard();
-			gameFlow.resetGameState();
+			gameFlow.disableGame(); // disables game functionality while on other menus
+			document.getElementById("game-board").style.opacity = 0.3;
+			document.getElementById("player-names").style.display = "grid";
+			document.getElementById("player-info").style.display = "none";
 		});
 
-	// submits names
+	// Submit button for changing player names
 	document
 		.getElementById("submit-btn")
 		.addEventListener("click", function (event) {
-            let p1name = document.getElementById("player1").value;
-            let p2name = document.getElementById("player2").value;
-            player1 = playerFactory(p1name, "X");
-            player2 = playerFactory(p2name, "O");
-            console.log(p1name);
-            console.log(player1);
-            document.getElementById("game-board").style.opacity = 1;
-            document.getElementById("player-names").style.display = "none";
-            document.getElementById("player-info").style.display = "flex";
-            resetRenderBoard();
+			let p1name = document.getElementById("player1").value;
+			let p2name = document.getElementById("player2").value;
+			player1 = playerFactory(p1name, "X"); //create players
+			player2 = playerFactory(p2name, "O");
 			gameBoard.resetBoard();
-            gameFlow.resetGameState();
-
+			gameFlow.resetGameState();
+			// changes view to board and player info again
+			document.getElementById("game-board").style.opacity = 1; 
+			document.getElementById("player-names").style.display = "none";
+			document.getElementById("player-info").style.display = "flex";
+			resetRenderBoard();
 		});
 
+	//Player board displayed on screen
 	document
 		.getElementById("game-board")
 		.addEventListener("click", function (event) {
 			//Game Board Event Listeners
 			if (event.target.classList.contains("positions")) {
-				let position = event.target.id.slice(-1);
-				resultOfPlay = gameFlow.gameLogic(position);
-				if (Array.isArray(resultOfPlay)) {
-					// In case of WIN
-					console.log(resultOfPlay + gameFlow.getCurrentPlayer().name);
+				let position = event.target.id.slice(-1);// get position clicked
+				resultOfPlay = gameFlow.gameLogic(position); // check if position is a valid play
+				updatePlayerInfo(); // updates player info (in this case the currentPlayer only since it's in between plays)
+				if (Array.isArray(resultOfPlay)) { // In case of WIN
 					render();
+					triggerEndMsg(gameFlow.getCurrentPlayer()); //Trigger End Msg with winning player
 					// Highlights winning plays
 					document
 						.getElementById(`position-${resultOfPlay[0]}`)
@@ -253,12 +296,10 @@ const screenDisplay = (() => {
 						.classList.add("winner-position");
 				} else if (resultOfPlay == "TIE") {
 					render();
-					// In case of TIE
+					triggerEndMsg("tie"); //Trigger End Msg with tie
 				} else {
 					render();
 				}
 			}
 		});
-
-	return { render, resetRenderBoard };
 })();

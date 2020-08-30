@@ -7,31 +7,35 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="main.css">
-    </head>
-    <body>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed:wght@300&family=Roboto+Mono:wght@700&family=Roboto+Slab&display=swap" rel="stylesheet">
         <div id="container">
             <div id="title"><h1>tic-tac-toe</h1></div>
                 <div id="game-ending">
                   <div class="ending-msg">
+                    <h3 id="end-game-text"></h3>
                   </div>
+                  <button class="restart-game btncustom yellow">Restart Game</button>
                 </div>
                 <div id="player-names">
                   <h3 id="textp1">Player 1 Name:</h3>
-                  <input type="text" id="player1" value="Some text...">
+                  <input type="text" id="player1" value="Player 1">
                   <h3 id="textp2">Player 2 Name:</h3>
-                  <input type="text" id="player2" value="Some text...">
+                  <input type="text" id="player2" value="Player 2">
                   <button id="submit-btn" class="btncustom yellow">Start</button>
                 </div>
                 <div id="player-info">
                   <div class="playercard" >
-                    <div class="pheader"><h2>Player 1</h2></div>
+                    <div class="pheader"><h2>Player 1 (X)</h2></div>
                     <div class="pname" id="player1name">Name:</div>
                     <div class="pscore" id="player1score">Score:</div>
                   </div>
-                  <button id="restart-game" class="btncustom yellow">Restart Game</button>
-                  <button id="change-players" class="btncustom yellow">Change Players</button>
+                  <div id="info-grid">
+                    <button class="restart-game btncustom yellow">Restart Game</button>
+                    <button id="change-players" class="btncustom yellow">Change Players</button>
+                    <h4 id="current-player">Current Player: </h4>
+                  </div>
                   <div class="playercard" >
-                    <div class="pheader"><h2>Player 2</h2></div>
+                    <div class="pheader"><h2>Player 2 (O)</h2></div>
                     <div class="pname" id="player2name">Name:</div>
                     <div class="pscore" id="player2score">Score:</div>
                   </div>
@@ -48,6 +52,12 @@
                     <div class="positions" id="position-8"></div>
                 </div>
         </div>
+        <div class="footer">
+          <p class="footer-text">
+            Made by <a href="https://zegomes.net">José Gomes</a> <a href="https://github.com/Kaneco"><i class="fab fa-github emoji"></i></a>
+          </p>
+        </div>
         <script src="main.js" async defer></script>
+        <script src="https://kit.fontawesome.com/a7cf626cf9.js" crossorigin="anonymous"></script>
     </body>
 </html>
