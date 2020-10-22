@@ -1,7 +1,18 @@
-# tic-tac-toe
 
-Javascript, HTML and CSS tic-tac-toe
+ # Tic-Tac-Toe
 
-The Odin Project (https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript)
+Tic-Tac-Toe game made using Javascript
 
-Total project time: 18h
+**Total project time:** 18h
+
+## Live Demo
+Here is the live demo: https://kaneco.github.io/tic-tac-toe/
+## Preview
+![tictactoe](https://i.imgur.com/JdBVBoI.jpg)
+
+## Source
+
+[The Odin Project Curriculum](https://www.theodinproject.com/courses/javascript/lessons/tic-tac-toe-javascript)
+
+## License
+This project is licensed under the terms of the **[MIT](https://choosealicense.com/licenses/mit/)**  license. 
