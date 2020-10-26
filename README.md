@@ -6,7 +6,7 @@ Tic-Tac-Toe game made using Javascript
 **Total project time:** 18h
 
 ## Live Demo
-Here is the live demo: https://kaneco.github.io/tic-tac-toe/
+Here is the live demo: https://ze-gomes.github.io/tic-tac-toe/
 ## Preview
 ![tictactoe](https://i.imgur.com/JdBVBoI.jpg)
 
